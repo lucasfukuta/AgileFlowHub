@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgileFlowHub — Protótipo Navegável</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="screen-login" class="login-wrap">
+    <div class="login-left">
+        <img src="images/Agile_Flow_Hub_Horizontal_Dark.png" alt="AgileFlowHub" style="width: 550px;">
+        <div>
+        <h2>Centralize operações, tarefas, clientes e ativos em um só lugar.</h2>
+        <p>Plataforma B2B de gestão operacional com CRM leve, controle de documentos e empréstimo de equipamentos.</p>
+        </div>
+        <div style="font-size:12px;opacity:.7;margin-top:40px">© 2026 AgileFlowHub · Protótipo UI/UX</div>
+    </div>
+    <div class="login-right">
+        <div class="login-card">
+        <h1>Entrar na plataforma</h1>
+        <p class="sub">Acesse com suas credenciais corporativas</p>
+        <form onsubmit="return doLogin(event)">
+            <div class="field">
+            <label>E-mail <span class="req">*</span></label>
+            <input type="email" id="login-email" value="ana.vieira@agileflowhub.com.br" required>
+            </div>
+            <div class="field">
+            <label>Senha <span class="req">*</span></label>
+            <input type="password" id="login-pass" value="demo1234" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%">Entrar</button>
+        </form>
+        <div class="alert warn" style="margin-top:24px;font-size:11px;padding:10px">
+            <div>⚠️</div><div>Protótipo UI/UX — autenticação simulada. Nenhum dado é enviado ou persistido.</div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- ================= APP ================= -->
+    <div id="screen-app" class="hidden">
+    <div class="device-bar">
+    <span>Preview:</span>
+    <button class="active" onclick="setDevice('desktop',this)">💻 Desktop</button>
+    <button onclick="setDevice('tablet',this)">💻 Tablet</button>
+    <button onclick="setDevice('mobile',this)">📱 Mobile</button>
+    <span style="opacity:.6">|</span>
+    <button onclick="logout()" style="background:transparent">↩ Sair</button>
+    </div>
+
+    <div class="app" id="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <!-- Logo na Sidebar -->
+        <div class="brand">
+        <img src="images/Agile_Flow_Hub_Vertical_Dark.png" alt="AgileFlowHub" style="width: 80px;">
+        </div>
+        
+        <div class="nav-group">Principal</div>
+        <div class="nav-item active" data-page="dashboard"><span class="ico">🏠</span><span>Visão geral</span></div>
+        <div class="nav-item" data-page="tasks"><span class="ico">✅</span><span>Demandas</span></div>
+        <div class="nav-item" data-page="clientes"><span class="ico">🏢</span><span>CRM / Clientes</span></div>
+        <div class="nav-item" data-page="atendimento"><span class="ico">🎧</span><span>Atendimento</span></div>
+        <div class="nav-item" data-page="documentos"><span class="ico">📄</span><span>Documentos</span></div>
+        <div class="nav-item" data-page="equipamentos"><span class="ico">📦</span><span>Equipamentos</span></div>
+        <div class="nav-item" data-page="painel-diario"><span class="ico">📊</span><span>Painel diário</span></div>
+        <div class="nav-item" data-page="funcionarios"><span class="ico">👥</span><span>Funcionários</span></div>
+        <div class="nav-item" data-page="admin-equipes"><span class="ico">🧩</span><span>Equipes</span></div>
+        <div class="nav-item" data-page="auditoria"><span class="ico">🕓</span><span>Auditoria</span></div>
+        
+        <div class="nav-group">Administração</div>
+        <div class="nav-item" data-page="admin-usuarios"><span class="ico">🔐</span><span>Permissões</span></div>
+        <div class="nav-item" data-page="admin-ia"><span class="ico">🤖</span><span>Regras de IA</span></div>
+        <div class="nav-item" data-page="admin-branding"><span class="ico">🎨</span><span>Identidade visual</span></div>
+        <div class="nav-item" data-page="admin-prefs"><span class="ico">⚙️</span><span>Preferências</span></div>
+        
+        <div class="side-foot">
+        <div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Ana"></div>
+        <div><div style="color:#fff;font-weight:600">Ana Vieira</div><div style="font-size:11px;color:#64748B;font-weight:500">Administradora</div></div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+            <div class="topbar">
+        <div class="search-box"><input placeholder="Buscar em todo o sistema…"/></div>
+        <div class="topbar-actions">
+            <button class="iconbtn" onclick="showToast('3 notificações · visualização ilustrativa','info')" aria-label="Notificações">🔔<span class="badge">3</span></button>
+            <button class="iconbtn" onclick="showToast('Ajuda e suporte fictícios (protótipo)','info')" aria-label="Ajuda">❓</button>
+            <div class="user-menu" onclick="go('admin-prefs')">
+            <div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Ana"></div>
+            <div style="line-height:1.2"><div style="font-weight:600;font-size:13px">Ana Vieira</div><div style="font-size:11px;color:var(--muted)">Admin</div></div>
+            <div style="font-size:10px;color:var(--muted)">▼</div>
+            </div>
+        </div>
+        </div>
+
+        <div class="content">
+
+        <!-- ================= VISÃO GERAL ================= -->
+        <div class="page active" id="page-dashboard">
+            <div class="page-head">
+            <div>
+                <div class="crumb">Início / Visão geral</div>
+                <h1>Visão Geral</h1>
+                <p class="subtitle">Quinta-feira, 22 de outubro de 2026 · Resumo operacional da equipe</p>
+            </div>
+            <div class="page-head-actions">
+                <select class="btn btn-secondary" onchange="showToast('Período alterado: '+this.value,'info')">
+                <option>Hoje</option><option>Últimos 7 dias</option><option>Últimos 30 dias</option>
+                </select>
+                <button class="btn btn-secondary" onclick="go('tasks')">Ver demandas</button>
+                <button class="btn btn-primary" onclick="openNewTask()">＋ Nova tarefa</button>
+            </div>
+            </div>
+
+            <div class="grid grid-4">
+            <div class="card stat"><div class="stat-content"><div class="k">Demandas abertas</div><div class="v">42</div><div class="d up">▲ 8 vs ontem</div></div></div>
+            <div class="card stat"><div class="stat-content"><div class="k">Demandas atrasadas</div><div class="v" style="color:var(--danger)">5</div><div class="d danger">⚠ requer atenção</div></div></div>
+            <div class="card stat"><div class="stat-content"><div class="k">Oportunidades</div><div class="v">R$ 486.500</div><div class="d">6 em negociação</div></div></div>
+            <div class="card stat"><div class="stat-content"><div class="k">Equip. emprestados</div><div class="v">12</div><div class="d warn">2 devoluções atrasadas</div></div></div>
+            </div>
+
+            <div class="grid grid-2-1">
+            <div class="card">
+                <div class="card-head"><h2>Demandas de hoje</h2><span class="link" onclick="go('tasks')">Ver todas →</span></div>
+                <ul class="tasks-list">
+                <li><input type="checkbox" onchange="toggleTask(this,'Revisar proposta — Nordeste Alimentos')"><div><div class="t-title">Revisar proposta — Nordeste Alimentos</div><div class="t-meta"><span class="tag d">Alta</span><span class="tag w">vence hoje</span><span>Departamento Comercial</span></div></div></li>
+                <li><input type="checkbox" onchange="toggleTask(this,'Conferir devolução — Projetor Epson')"><div><div class="t-title">Conferir devolução — Projetor Epson</div><div class="t-meta"><span class="tag">Média</span><span class="tag">amanhã</span><span>Operações</span></div></div></li>
+                <li><input type="checkbox" onchange="toggleTask(this,'Enviar contrato — Grupo Aurora')"><div><div class="t-title">Enviar contrato — Grupo Aurora</div><div class="t-meta"><span class="tag d">Alta</span><span class="tag i">24/10</span><span>Comercial</span></div></div></li>
+                </ul>
+            </div>
+            <!-- Box de Contatos com Foto, Email e Telefone -->
+            <div class="card">
+                <div class="card-head"><h3>Contatos frequentes</h3><span class="link" onclick="go('funcionarios')">Ver contatos →</span></div>
+                <div class="contact-list">
+                <div class="contact-item">
+                    <div class="avatar lg"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Renata"></div>
+                    <div class="contact-info">
+                    <div class="contact-name">Renata Castro</div>
+                    <div class="contact-role">Diretora Comercial · Nordeste Alimentos</div>
+                    <div class="contact-details">
+                        <span>✉️ renata@nordestealim.com.br</span>
+                        <span>📞 (81) 99876-5432</span>
+                    </div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="avatar lg"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Paulo"></div>
+                    <div class="contact-info">
+                    <div class="contact-name">Paulo Mendes</div>
+                    <div class="contact-role">Gerente de Compras · Nordeste Alimentos</div>
+                    <div class="contact-details">
+                        <span>✉️ paulo@nordestealim.com.br</span>
+                        <span>📞 (81) 98765-4321</span>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="grid grid-2">
+            <div class="card">
+                <div class="card-head"><h3>Distribuição por status</h3></div>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span>A fazer</span><b>18</b></div><div style="height:8px;background:var(--bg);border-radius:4px"><div style="height:8px;width:43%;background:var(--muted);border-radius:4px"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span>Em andamento</span><b>14</b></div><div style="height:8px;background:var(--bg);border-radius:4px"><div style="height:8px;width:33%;background:var(--primary);border-radius:4px"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span>Em revisão</span><b>6</b></div><div style="height:8px;background:var(--bg);border-radius:4px"><div style="height:8px;width:14%;background:var(--warning);border-radius:4px"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span>Concluída</span><b>4</b></div><div style="height:8px;background:var(--bg);border-radius:4px"><div style="height:8px;width:10%;background:var(--teal);border-radius:4px"></div></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Atividade recente</h3></div>
+                <ul class="timeline">
+                <li>
+                    <div class="avatar sm"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Ana"></div>
+                    <div class="t-content">Ana moveu <b>"Proposta Nordeste"</b> para Negociação<span class="ts">há 12 minutos</span></div>
+                </li>
+                <li>
+                    <div class="avatar sm mgr"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Carlos"></div>
+                    <div class="t-content">Carlos registrou empréstimo do <b>Projetor Epson</b><span class="ts">há 40 minutos</span></div>
+                </li>
+                <li>
+                    <div class="avatar sm mem"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Marina"></div>
+                    <div class="t-content">Marina anexou <b>"Contrato Aurora 2026.pdf"</b><span class="ts">há 1 hora</span></div>
+                </li>
+                </ul>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= DEMANDAS ================= -->
+        <div class="page" id="page-tasks">
+            <div class="page-head">
+            <div><div class="crumb">Início / Demandas</div><h1>Demandas</h1><p class="subtitle">Tarefas operacionais da equipe</p></div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="showToast('Exportação simulada','info')">Exportar</button>
+                <button class="btn btn-primary" onclick="openNewTask()">＋ Nova tarefa</button>
+            </div>
+            </div>
+            <div class="card">
+            <div class="tabs">
+                <div class="tab active" onclick="setTaskView('kanban',this)">Kanban</div>
+                <div class="tab" onclick="setTaskView('list',this)">Lista</div>
+                <div class="tab" onclick="setTaskView('calendar',this)">Calendário</div>
+            </div>
+
+            <!-- KANBAN -->
+            <div id="task-kanban-view">
+                <div class="kanban">
+                <div class="kanban-col" data-status="a-fazer"><h4>A fazer <span class="count">5</span></h4>
+                    <div class="kcard" onclick="openTaskDetail('Revisar proposta comercial','Alta','A fazer')"><div class="k-title">Revisar proposta comercial</div><div class="k-meta"><span class="tag d">Alta</span><span>Ana V.</span></div><div class="k-meta"><span>Comercial</span><span>23/10</span></div></div>
+                    <div class="kcard" onclick="openTaskDetail('Onboarding cliente Nordeste','Alta','A fazer')"><div class="k-title">Onboarding cliente Nordeste</div><div class="k-meta"><span class="tag d">Alta</span><span>Ana V.</span></div><div class="k-meta"><span>Comercial</span><span>25/10</span></div></div>
+                    <div class="kcard add-btn">＋ Adicionar cartão</div>
+                </div>
+                <div class="kanban-col" data-status="em-andamento"><h4>Em andamento <span class="count">3</span></h4>
+                    <div class="kcard" onclick="openTaskDetail('Conferir devolução — Projetor','Média','Em andamento')"><div class="k-title">Conferir devolução — Projetor</div><div class="k-meta"><span class="tag">Média</span><span>Carlos L.</span></div><div class="k-meta"><span>Operações</span><span>24/10</span></div></div>
+                </div>
+                <div class="kanban-col" data-status="em-revisao"><h4>Em revisão <span class="count">2</span></h4>
+                    <div class="kcard" onclick="openTaskDetail('Validar contrato Aurora','Alta','Em revisão')"><div class="k-title">Validar contrato Aurora</div><div class="k-meta"><span class="tag d">Alta</span><span>Marina S.</span></div><div class="k-meta"><span>Jurídico</span><span>26/10</span></div></div>
+                </div>
+                <div class="kanban-col" data-status="concluida"><h4>Concluída <span class="count">12</span></h4>
+                    <div class="kcard" style="opacity:.6"><div class="k-title" style="text-decoration:line-through">Enviar contrato Aurora</div><div class="k-meta"><span class="tag s">Concluída</span><span>Ana V.</span></div></div>
+                </div>
+                <div class="kanban-col" data-status="cancelada"><h4>Cancelada <span class="count">1</span></h4>
+                    <div class="kcard" style="opacity:.5"><div class="k-title">Renovar licença antiga</div><div class="k-meta"><span class="tag n">Cancelada</span></div></div>
+                </div>
+                </div>
+                <div style="font-size:12px;color:var(--muted);margin-top:12px">💡 Alternativa ao arrastar-soltar: abra o cartão e use o seletor de status no detalhe.</div>
+            </div>
+
+            <!-- LIST -->
+            <div id="task-list-view" class="hidden">
+                <div class="filters">
+                <div class="search"><input placeholder="Buscar tarefas…"/></div>
+                <select><option>Status: todos</option><option>A fazer</option><option>Em andamento</option><option>Em revisão</option><option>Concluída</option></select>
+                <select><option>Prioridade: todas</option><option>Alta</option><option>Média</option><option>Baixa</option></select>
+                <select><option>Responsável: todos</option><option>Ana V.</option><option>Carlos L.</option></select>
+                </div>
+                <table><thead><tr><th>Tarefa</th><th>Status</th><th>Prioridade</th><th>Responsável</th><th>Prazo</th><th></th></tr></thead>
+                            <tbody>
+                <tr class="clickable" onclick="openTaskDetail('Revisar proposta comercial','Alta','A fazer')">
+                    <td><b>Revisar proposta comercial</b></td>
+                    <td><span class="tag-status-a-fazer">A fazer</span></td>
+                    <td><span class="tag d">Alta</span></td>
+                    <td>Ana V.</td>
+                    <td>23/10</td>
+                    <td class="tbl-actions">→</td>
+                </tr>
+                <tr class="clickable" onclick="openTaskDetail('Conferir devolução','Média','Em andamento')">
+                    <td><b>Conferir devolução — Projetor</b></td>
+                    <td><span class="tag-status-em-andamento">Em andamento</span></td>
+                    <td><span class="tag">Média</span></td>
+                    <td>Carlos L.</td>
+                    <td>24/10</td>
+                    <td class="tbl-actions">→</td>
+                </tr>
+                <tr class="clickable" onclick="openTaskDetail('Validar contrato Aurora','Alta','Em revisão')">
+                    <td><b>Validar contrato Aurora</b></td>
+                    <td><span class="tag-status-em-revisao">Em revisão</span></td>
+                    <td><span class="tag d">Alta</span></td>
+                    <td>Marina S.</td>
+                    <td>26/10</td>
+                    <td class="tbl-actions">→</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                    <div class="empty">
+                        <div class="ico">📭</div>
+                        <h3>Sem resultados para os filtros aplicados</h3>
+                        <p>Tente limpar os filtros ou ajustar os critérios.</p>
+                        <button class="btn btn-secondary" onclick="showToast('Filtros limpos','success')">Limpar filtros</button>
+                    </div>
+                    </td>
+                </tr>
+                </tbody></table>
+            </div>
+
+            <!-- CALENDAR -->
+            <div id="task-calendar-view" class="hidden">
+                <div class="calendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">SEG</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">TER</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">QUA</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">QUI</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">SEX</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">SÁB</div>
+                <div class="cal-cell" style="background:#FAFBFD;text-align:center;font-weight:700;color:var(--muted);min-height:auto;padding:8px">DOM</div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px;opacity:.5"><div class="day" style="font-weight:700">21</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">22</div><div style="background:var(--primary-50);color:var(--primary);border-radius:4px;padding:2px 4px;margin-top:2px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Revisar proposta</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">23</div><div style="background:var(--primary-50);color:var(--primary);border-radius:4px;padding:2px 4px;margin-top:2px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Reunião Aurora</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">24</div><div style="background:var(--primary-50);color:var(--primary);border-radius:4px;padding:2px 4px;margin-top:2px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Devolução Epson</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">25</div><div style="background:var(--primary-50);color:var(--primary);border-radius:4px;padding:2px 4px;margin-top:2px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Onboarding</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">26</div></div>
+                <div style="background:#fff;min-height:100px;padding:8px;font-size:12px"><div class="day" style="font-weight:700;color:var(--navy);margin-bottom:4px">27</div></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= TASK DETAIL ================= -->
+        <div class="page" id="page-task-detail">
+            <div class="page-head">
+            <div>
+                <div class="crumb"><a href="#" onclick="go('tasks');return false">Demandas</a> / <span id="td-crumb">Detalhe</span></div>
+                <h1 id="td-title">Detalhe da tarefa</h1>
+                <p class="subtitle"><span id="td-meta-prio" class="tag">—</span> <span id="td-meta-status" class="tag i">—</span> Tarefa #T-1042</p>
+            </div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="go('tasks')">← Voltar</button>
+                <button class="btn btn-primary" onclick="completeTask(this)">✓ Marcar como concluída</button>
+            </div>
+            </div>
+            <div class="grid grid-2-1">
+            <div class="card">
+                <div class="card-head"><h3>Descrição</h3></div>
+                <p style="font-size:13px;color:var(--text);margin:0 0 20px">Revisar a proposta comercial enviada ao cliente Nordeste Alimentos, validando valores, condições de pagamento e prazo de entrega antes do envio final.</p>
+                <div class="card-head"><h3>Comentários (2)</h3></div>
+                <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;gap:12px"><div class="avatar">CL</div><div><div style="font-weight:600;font-size:12px">Carlos Lima <span style="color:var(--muted);font-weight:400;font-size:11px">· há 3 h</span></div><div style="font-size:12px;color:var(--muted);margin-top:2px">Validei os números com o financeiro, está tudo certo.</div></div></div>
+                <div style="display:flex;gap:12px"><div class="avatar mem">MS</div><div><div style="font-weight:600;font-size:12px">Marina Souza <span style="color:var(--muted);font-weight:400;font-size:11px">· há 1 h</span></div><div style="font-size:12px;color:var(--muted);margin-top:2px">Ajustei a cláusula de reajuste. Pode enviar.</div></div></div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:16px"><input type="text" placeholder="Adicionar comentário…" style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px"/><button class="btn btn-primary btn-sm" onclick="showToast('Comentário registrado (simulação)','success')">Enviar</button></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Detalhes</h3></div>
+                <div style="display:flex;flex-direction:column;gap:12px;font-size:13px">
+                <div><span style="color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:600">Responsável</span><div style="margin-top:2px">Ana Vieira</div></div>
+                <div><span style="color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:600">Departamento</span><div style="margin-top:2px"><span class="tag outline">Comercial</span></div></div>
+                <div><span style="color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:600">Prazo</span><div style="margin-top:2px">23/10/2026</div></div>
+                <div><span style="color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:600">Oportunidade vinculada</span><div style="margin-top:2px"><a href="#" onclick="go('oportunidade');return false">Fornecimento Q4 (Nordeste)</a></div></div>
+                </div>
+                <div class="card-head" style="margin-top:20px"><h3>Alterar status</h3></div>
+                <select onchange="showToast('Status alterado para '+this.value+' (simulação)','success')" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px">
+                <option>A fazer</option><option>Em andamento</option><option>Em revisão</option><option>Concluída</option><option>Cancelada</option>
+                </select>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= CRM CLIENTES ================= -->
+        <div class="page" id="page-clientes">
+            <div class="page-head">
+            <div><div class="crumb">Início / Clientes</div><h1>Clientes</h1><p class="subtitle">Organizações atendidas pela operação comercial</p></div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="showToast('Relatório comercial ilustrativo','info')">Relatório</button>
+                <button class="btn btn-primary" onclick="showToast('Formulário de criação de cliente (simulação)','info')">＋ Novo cliente</button>
+            </div>
+            </div>
+
+            <!-- Card único que contém as abas -->
+            <div class="card">
+            
+            <!-- Navegação por Abas -->
+            <div class="tabs">
+                <div class="tab active" onclick="setClienteTab('lista', this)">Lista de Clientes</div>
+                <div class="tab" onclick="setClienteTab('pipeline', this)">Pipeline Comercial</div>
+            </div>
+
+            <!-- ABA 1: Lista de Clientes -->
+            <div id="cli-tab-lista">
+                <div class="filters">
+                <div class="search"><input id="cli-search" placeholder="Buscar por nome ou CNPJ…" oninput="filterClientes()"/></div>
+                <select><option>Tipo: todos</option><option>Cliente</option><option>Prospect</option></select>
+                <select><option>Responsável: todos</option><option>Ana Vieira</option><option>Carlos Lima</option></select>
+                <select><option>Situação: todas</option><option>Ativo</option><option>Inativo</option><option>Lead</option></select>
+                </div>
+                <div class="tbl-wrap">
+                <table id="cli-table">
+                    <thead><tr><th>Organização</th><th>CNPJ</th><th>Segmento</th><th>Responsável</th><th>Situação</th><th>Oportunid.</th></tr></thead>
+                    <tbody>
+                    <tr class="clickable" data-name="Nordeste Alimentos" onclick="openCliente('Nordeste Alimentos')"><td><b>Nordeste Alimentos</b><br/><span style="font-size:11px;color:var(--muted)">contato@nordestealim.com.br</span></td><td>12.345.678/0001-90</td><td>Alimentos</td><td>Ana Vieira</td><td><span class="tag s">Ativo</span></td><td>2</td></tr>
+                    <tr class="clickable" data-name="Grupo Aurora" onclick="openCliente('Grupo Aurora')"><td><b>Grupo Aurora</b><br/><span style="font-size:11px;color:var(--muted)">contato@grupoaurora.com.br</span></td><td>98.765.432/0001-10</td><td>Energia</td><td>Carlos Lima</td><td><span class="tag s">Ativo</span></td><td>1</td></tr>
+                    <tr class="clickable" data-name="TechSul Sistemas" onclick="openCliente('TechSul Sistemas')"><td><b>TechSul Sistemas</b><br/><span style="font-size:11px;color:var(--muted)">contato@techsul.com.br</span></td><td>11.222.333/0001-44</td><td>Tecnologia</td><td>Marina Souza</td><td><span class="tag n">Lead</span></td><td>0</td></tr>
+                    <tr id="cli-empty" class="hidden"><td colspan="6"><div class="empty"><div class="ico">🔍</div><h3>Nenhum cliente encontrado</h3><p>Tente ajustar a busca ou limpar os filtros.</p><button class="btn btn-secondary" onclick="document.getElementById('cli-search').value='';filterClientes()">Limpar busca</button></div></td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <!-- ABA 2: Pipeline Comercial (Resumo) -->
+            <div id="cli-tab-pipeline" class="hidden">
+                <div class="grid grid-2-1">
+                <!-- Resumo por Etapa -->
+                <div>
+                    <div class="card-head" style="margin-bottom:16px">
+                    <h3>Resumo do Funil</h3>
+                    <span class="link" onclick="go('pipeline')">Ver Kanban completo →</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:12px;font-size:13px">
+                    <div style="display:flex;justify-content:space-between;padding:14px;background:var(--bg);border-radius:10px;font-weight:500"><span>Qualificação</span><b>R$ 120.000</b></div>
+                    <div style="display:flex;justify-content:space-between;padding:14px;background:var(--bg);border-radius:10px;font-weight:500"><span>Proposta</span><b>R$ 186.500</b></div>
+                    <div style="display:flex;justify-content:space-between;padding:14px;background:var(--bg);border-radius:10px;font-weight:500"><span>Negociação</span><b>R$ 180.000</b></div>
+                    <div style="display:flex;justify-content:space-between;padding:14px;background:var(--success-bg);border-radius:10px;font-weight:600"><span>Ganho</span><b style="color:var(--success)">R$ 92.000</b></div>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas / KPIs -->
+                <div class="card" style="background:var(--bg);box-shadow:none;border:none">
+                    <div class="card-head"><h3>Indicadores de Vendas</h3></div>
+                    <div style="display:flex;flex-direction:column;gap:16px">
+                    <div>
+                        <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase">Taxa de Conversão</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--navy)">31%</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase">Ticket Médio</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--navy)">R$ 45.200</div>
+                    </div>
+                    <div>
+                        <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase">Oportunidades Abertas</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--primary)">6</div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= CLIENTE PERFIL ================= -->
+        <div class="page" id="page-cliente">
+            <div class="page-head">
+            <div><div class="crumb"><a href="#" onclick="go('clientes');return false">CRM / Clientes</a> / <span id="cl-nome-crumb">—</span></div>
+            <h1 id="cl-nome">—</h1>
+            <p class="subtitle" id="cl-meta">CNPJ · Segmento · Desde 03/2024</p></div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="go('clientes')">← Voltar</button>
+                <button class="btn btn-primary" onclick="openNewOpportunity()">＋ Nova oportunidade</button>
+            </div>
+            </div>
+            <div class="card">
+            <div class="tabs">
+                <div class="tab active" onclick="setTab('cliente',this,'ov')">Visão geral</div>
+                <div class="tab" onclick="setTab('cliente',this,'contatos')">Contatos</div>
+                <div class="tab" onclick="setTab('cliente',this,'ops')">Oportunidades</div>
+                <div class="tab" onclick="setTab('cliente',this,'ativ')">Atividades</div>
+                <div class="tab" onclick="setTab('cliente',this,'docs')">Documentos</div>
+            </div>
+            <div id="cliente-tab-ov">
+                <div class="grid grid-4">
+                <div class="card stat" style="box-shadow:none;border:1px solid var(--border)"><div class="k">Oportunidades</div><div class="v">2</div></div>
+                <div class="card stat" style="box-shadow:none;border:1px solid var(--border)"><div class="k">Demandas abertas</div><div class="v">3</div></div>
+                <div class="card stat" style="box-shadow:none;border:1px solid var(--border)"><div class="k">Contatos</div><div class="v">2</div></div>
+                <div class="card stat" style="box-shadow:none;border:1px solid var(--border)"><div class="k">Valor total</div><div class="v">R$ 272.000</div></div>
+                </div>
+            </div>
+            <div id="cliente-tab-contatos" class="hidden">
+                <table><thead><tr><th>Nome</th><th>Cargo</th><th>E-mail</th><th>Telefone</th></tr></thead>
+                <tbody>
+                <tr><td><b>Renata Castro</b></td><td>Diretora Comercial</td><td>renata@nordestealim.com.br</td><td>(81) 99876-5432</td></tr>
+                <tr><td><b>Paulo Mendes</b></td><td>Gerente de Compras</td><td>paulo@nordestealim.com.br</td><td>(81) 98765-4321</td></tr>
+                </tbody></table>
+            </div>
+            <div id="cliente-tab-ops" class="hidden">
+                <table><thead><tr><th>Oportunidade</th><th>Valor</th><th>Etapa</th><th>Fecha em</th></tr></thead>
+                <tbody>
+                <tr class="clickable" onclick="go('oportunidade')"><td><b>Fornecimento Q4</b></td><td>R$ 180.000,00</td><td><span class="tag i">Negociação</span></td><td>30/10/2026</td></tr>
+                <tr><td><b>Renovação anual</b></td><td>R$ 92.000,00</td><td><span class="tag s">Ganho</span></td><td>12/10/2026</td></tr>
+                </tbody></table>
+            </div>
+            <div id="cliente-tab-ativ" class="hidden">
+                <ul class="timeline">
+                <li>21/10 · Reunião de alinhamento — Ana Vieira</li>
+                <li>18/10 · Envio de proposta comercial (PDF anexo)</li>
+                <li>15/10 · Ligação de qualificação — Carlos Lima</li>
+                <li>10/10 · Visita técnica registrada</li>
+                </ul>
+            </div>
+            <div id="cliente-tab-docs" class="hidden">
+                <table><thead><tr><th>Documento</th><th>Categoria</th><th>Data</th></tr></thead>
+                <tbody>
+                <tr><td>📄 Contrato Nordeste 2026.pdf</td><td>Contratos</td><td>03/03/2026</td></tr>
+                <tr><td>📄 Proposta Q4 - Nordeste.docx</td><td>Propostas</td><td>18/10/2026</td></tr>
+                </tbody></table>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= OPORTUNIDADE ================= -->
+        <div class="page" id="page-oportunidade">
+            <div class="page-head">
+            <div>
+                <div class="crumb"><a href="#" onclick="go('pipeline');return false">CRM / Pipeline</a> / <span id="op-crumb">Detalhe</span></div>
+                <h1 id="op-title">Detalhe da Oportunidade</h1>
+                <p class="subtitle"><span id="op-cliente">Cliente</span> · Responsável <span id="op-responsavel">—</span> · Fecha em <span id="op-data">—</span></p>
+            </div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="go('pipeline')">← Voltar</button>
+                <button class="btn btn-secondary" onclick="showToast('Oportunidade marcada como perdida (simulação)','warn')">Marcar como perdida</button>
+                <button class="btn btn-primary" onclick="openWinModal()">✓ Marcar como ganha</button>
+            </div>
+            </div>
+            <div class="grid grid-2-1">
+            <div class="card">
+                <div class="card-head"><h3>Timeline de atividades</h3><button class="btn btn-secondary btn-sm" onclick="showToast('Registro de atividade (simulação)','info')">＋ Registrar</button></div>
+                <ul class="timeline">
+                <li><b>21/10</b> · Reunião de alinhamento — Ana Vieira<span class="ts">Participaram Renata Castro e Paulo Mendes</span></li>
+                <li><b>18/10</b> · Envio de proposta comercial<span class="ts">Anexo: Proposta Q4 - Nordeste.docx</span></li>
+                <li><b>15/10</b> · Ligação de qualificação — Carlos Lima<span class="ts">Duração: 22 min · Cliente interessado</span></li>
+                <li><b>10/10</b> · Visita técnica<span class="ts">Registrada por Marina Souza</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Detalhes</h3></div>
+                <div style="display:flex;flex-direction:column;gap:14px;font-size:13px">
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Valor estimado</div><div id="op-valor" style="font-weight:700;font-size:20px;color:var(--navy);margin-top:2px">R$ 0,00</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Etapa</div><div id="op-etapa" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Probabilidade</div><div id="op-prob" style="margin-top:2px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Data prevista de fechamento</div><div id="op-data-side" style="margin-top:2px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Cliente</div><div id="op-cliente-side" style="margin-top:2px"><a href="#" onclick="go('clientes');return false">Ver perfil</a></div></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= PIPELINE ================= -->
+        <div class="page" id="page-pipeline">
+            <div class="page-head">
+            <div><div class="crumb">CRM / Pipeline comercial</div><h1>Pipeline comercial</h1><p class="subtitle">Oportunidades por etapa do funil</p></div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="go('clientes')">← Voltar</button>
+                <button class="btn btn-primary" onclick="openNewOpportunity()">＋ Nova oportunidade</button>
+            </div>
+            </div>
+            <div class="kanban">
+            <div class="kanban-col" data-stage="novo-lead"><h4>Novo lead <span class="count">2</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Expansão Sul — Aurora', 'R$ 186.500', 'Novo lead', 'Carlos Lima', '15/11/2026', '25%')">
+                <div class="k-title">Expansão Sul — Aurora</div>
+                <div class="k-valor">R$ 186.500</div>
+                <div class="k-meta"><span>Carlos L.</span><span>15/11</span></div>
+                </div>
+            </div>
+            
+            <div class="kanban-col" data-stage="qualificacao"><h4>Qualificação <span class="count">1</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Fornecimento Q4 — Nordeste', 'R$ 120.000', 'Qualificação', 'Ana Vieira', '30/10/2026', '40%')">
+                <div class="k-title">Fornecimento Q4 — Nordeste</div>
+                <div class="k-valor">R$ 120.000</div>
+                <div class="k-meta"><span>Ana V.</span><span>30/10</span></div>
+                </div>
+            </div>
+            
+            <div class="kanban-col" data-stage="proposta"><h4>Proposta <span class="count">1</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Licenciamento TechSul', 'R$ 66.500', 'Proposta', 'Marina Souza', '05/11/2026', '60%')">
+                <div class="k-title">Licenciamento TechSul</div>
+                <div class="k-valor">R$ 66.500</div>
+                <div class="k-meta"><span>Marina S.</span><span>05/11</span></div>
+                </div>
+            </div>
+            
+            <div class="kanban-col" data-stage="negociacao"><h4>Negociação <span class="count">1</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Fornecimento Q4 — Nordeste', 'R$ 180.000', 'Negociação', 'Ana Vieira', '30/10/2026', '70%')">
+                <div class="k-title">Fornecimento Q4 — Nordeste</div>
+                <div class="k-valor">R$ 180.000</div>
+                <div class="k-meta"><span>Ana V.</span><span>30/10</span></div>
+                </div>
+            </div>
+            
+            <div class="kanban-col" data-stage="ganho"><h4>Ganho <span class="count">1</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Renovação anual — Nordeste', 'R$ 92.000', 'Ganho', 'Ana Vieira', '12/10/2026', '100%')" style="border-left:4px solid var(--success)">
+                <div class="k-title">Renovação anual — Nordeste</div>
+                <div class="k-valor">R$ 92.000</div>
+                <div class="k-meta"><span>Ana V.</span><span>12/10</span></div>
+                </div>
+            </div>
+            
+            <div class="kanban-col" data-stage="perdido"><h4>Perdido <span class="count">1</span></h4>
+                <div class="kcard" onclick="openOportunidadeDetalhe('Proposta Grupo Sul', 'R$ 45.000', 'Perdido', 'Carlos Lima', '01/09/2026', '0%')" style="border-left:4px solid var(--danger)">
+                <div class="k-title">Proposta Grupo Sul</div>
+                <div class="k-valor">R$ 45.000</div>
+                <div class="k-meta"><span>Carlos L.</span></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+                <!-- ================= ATENDIMENTO (Help Desk) ================= -->
+        <div class="page" id="page-atendimento" style="padding:0;gap:0;">
+            
+            <div style="display:flex;height:calc(100vh - 112px);background:#fff;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)">
+            
+            <!-- Coluna 1: Fila de Atendimento -->
+            <div style="width:320px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:#F8FAFC">
+                <div style="padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <h2 style="font-size:16px;margin:0">Fila de Atendimento</h2>
+                <span class="tag i">3 aguardando</span>
+                </div>
+                <div style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px">
+                
+                <!-- Item Ativo -->
+                <div style="padding:16px;background:#fff;border:1px solid var(--primary);border-radius:12px;cursor:pointer;box-shadow:var(--shadow-sm)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <div class="avatar" style="width:32px;height:32px;font-size:11px">RC</div>
+                        <span style="font-weight:700;font-size:13px;color:var(--navy)">Renata Castro</span>
+                    </div>
+                    <span style="font-size:10px;color:var(--muted)">agora</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:4px">Dúvida sobre fatura</div>
+                    <div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Olá, gostaria de entender porque...</div>
+                    <div style="margin-top:8px;display:flex;gap:4px"><span class="tag w">Alta</span><span class="tag outline">Financeiro</span></div>
+                </div>
+
+                <!-- Item Aguardando -->
+                <div style="padding:16px;background:#fff;border:1px solid var(--border);border-radius:12px;cursor:pointer">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <div class="avatar mgr" style="width:32px;height:32px;font-size:11px">PM</div>
+                        <span style="font-weight:700;font-size:13px;color:var(--navy)">Paulo Mendes</span>
+                    </div>
+                    <span style="font-size:10px;color:var(--muted)">há 5 min</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:4px">Problema com equipamento</div>
+                    <div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">O projetor não está ligando...</div>
+                    <div style="margin-top:8px;display:flex;gap:4px"><span class="tag">Média</span><span class="tag outline">Operações</span></div>
+                </div>
+
+                </div>
+            </div>
+
+            <!-- Coluna 2: Chat -->
+            <div style="flex:1;display:flex;flex-direction:column">
+                <!-- Header do Chat -->
+                <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fff">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div class="avatar" style="background:var(--primary-50);color:var(--primary);font-weight:700">RC</div>
+                    <div>
+                    <div style="font-weight:700;color:var(--navy)">Renata Castro</div>
+                    <div style="font-size:12px;color:var(--success);display:flex;align-items:center;gap:4px"><span class="dot" style="background:var(--success)"></span> Online</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px">
+                    <button class="btn btn-secondary btn-sm" onclick="showToast('Ligação iniciada (simulação)','info')">📞 Ligar</button>
+                    <button class="btn btn-secondary btn-sm" onclick="showToast('Chamado finalizado (simulação)','success')">✓ Finalizar</button>
+                </div>
+                </div>
+
+                <!-- Mensagens -->
+                <div style="flex:1;padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;background:var(--bg)">
+                <!-- Mensagem Cliente -->
+                <div style="display:flex;gap:12px;max-width:70%">
+                    <div class="avatar" style="width:32px;height:32px;font-size:11px">RC</div>
+                    <div>
+                    <div style="background:#fff;padding:12px 16px;border-radius:12px;border-top-left-radius:0;font-size:13px;box-shadow:var(--shadow-sm)">Olá, bom dia! Gostaria de entender porque a fatura do mês de outubro veio com um valor diferente do contrato.</div>
+                    <div style="font-size:11px;color:var(--muted);margin-top:4px;padding-left:4px">09:42</div>
+                    </div>
+                </div>
+                <!-- Mensagem Atendente -->
+                <div style="display:flex;gap:12px;max-width:70%;align-self:flex-end;flex-direction:row-reverse">
+                    <div class="avatar" style="width:32px;height:32px;font-size:11px"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                    <div>
+                    <div style="background:var(--primary);color:#fff;padding:12px 16px;border-radius:12px;border-top-right-radius:0;font-size:13px;box-shadow:var(--shadow-sm)">Bom dia, Renata! Tudo bem? Vou verificar aqui no sistema e já te retorno.</div>
+                    <div style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right;padding-right:4px">09:44</div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Input de Mensagem -->
+                <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:12px;background:#fff">
+                <input type="text" placeholder="Digite sua mensagem…" style="flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:10px;font-size:13px"/>
+                <button class="btn btn-primary" onclick="showToast('Mensagem enviada (simulação)','success')">Enviar</button>
+                </div>
+            </div>
+
+            <!-- Coluna 3: Detalhes do Cliente -->
+            <div style="width:300px;border-left:1px solid var(--border);display:flex;flex-direction:column;background:#fff">
+                <div style="padding:20px;border-bottom:1px solid var(--border)">
+                <h3 style="font-size:14px;margin:0 0 16px 0">Detalhes do Cliente</h3>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+                    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Empresa:</span> <b>Nordeste Alimentos</b></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Cargo:</span> <b>Diretora Comercial</b></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">E-mail:</span> <b>renata@nordestealim.com.br</b></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Telefone:</span> <b>(81) 99876-5432</b></div>
+                </div>
+                </div>
+                <div style="padding:20px;border-bottom:1px solid var(--border)">
+                <h3 style="font-size:14px;margin:0 0 12px 0">Ações Rápidas</h3>
+                <button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" onclick="showToast('Tarefa criada a partir do atendimento (simulação)','success')">＋ Criar Demanda</button>
+                <button class="btn btn-secondary btn-sm" style="width:100%" onclick="go('oportunidade')">Ver Oportunidades</button>
+                </div>
+                <div style="padding:20px;flex:1;overflow-y:auto">
+                <h3 style="font-size:14px;margin:0 0 12px 0">Histórico Recente</h3>
+                <ul style="font-size:11px;color:var(--muted);list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">
+                    <li>18/10 · Atendimento finalizado<br/><span style="color:var(--text)">"Dúvida sobre reajuste"</span></li>
+                    <li>15/10 · Reunião de alinhamento<br/><span style="color:var(--text)">Responsável: Ana Vieira</span></li>
+                </ul>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+        <!-- ================= DOCUMENTOS ================= -->
+        <div class="page" id="page-documentos">
+            <div class="page-head"><div><div class="crumb">Início / Documentos</div><h1>Documentos</h1><p class="subtitle">Catálogo de arquivos, links e registros</p></div>
+            <div class="page-head-actions"><button class="btn btn-secondary" onclick="showToast('Categorias (simulação)','info')">Categorias</button>
+            <button class="btn btn-primary" onclick="showToast('Registro de documento (simulação)','info')">＋ Novo documento</button></div></div>
+            <div class="card">
+            <div class="tabs">
+                <div class="tab active" onclick="setDocTab('cat',this)">Catálogo</div>
+                <div class="tab" onclick="setDocTab('links',this)">Links corporativos</div>
+            </div>
+            
+            <div id="doc-cat-tab">
+                <div class="filters">
+                <div class="search"><input id="doc-search" placeholder="Buscar por título, tag ou categoria…" oninput="filterDocs()"/></div>
+                <select><option>Categoria: todas</option><option>Contratos</option><option>Propostas</option><option>Fiscal</option><option>Manuais</option></select>
+                <select><option>Departamento: todos</option><option>Comercial</option><option>Financeiro</option></select>
+                <select><option>Tipo: todos</option><option>Arquivo</option><option>Link externo</option><option>Registro</option></select>
+                </div>
+                <div id="doc-loading" class="hidden">
+                <div class="skel-row"><div class="skeleton" style="width:36px;height:36px;border-radius:50%"></div><div style="flex:1"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:30%;height:10px"></div></div></div>
+                <div class="skel-row"><div class="skeleton" style="width:36px;height:36px;border-radius:50%"></div><div style="flex:1"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:30%;height:10px"></div></div></div>
+                <div class="skel-row"><div class="skeleton" style="width:36px;height:36px;border-radius:50%"></div><div style="flex:1"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:30%;height:10px"></div></div></div>
+                </div>
+                <div class="tbl-wrap" id="doc-table">
+                <table>
+                    <thead><tr><th>Título</th><th>Categoria</th><th>Tipo</th><th>Responsável</th><th>Data</th><th>Acesso</th></tr></thead>
+                    <tbody id="doc-body">
+                    <tr class="clickable" data-name="Contrato Nordeste 2026" onclick="openDoc('Contrato Nordeste 2026','Contratos','Arquivo','Ana Vieira','03/03/2026','Restrito')"><td><b>📄 Contrato Nordeste 2026.pdf</b></td><td>Contratos</td><td><span class="tag i">Arquivo</span></td><td>Ana Vieira</td><td>03/03/2026</td><td><span class="tag d">Restrito</span></td></tr>
+                    <tr class="clickable" data-name="Proposta Q4 Nordeste" onclick="openDoc('Proposta Q4 - Nordeste','Propostas','Arquivo','Marina Souza','18/10/2026','Equipe')"><td><b>📄 Proposta Q4 - Nordeste.docx</b></td><td>Propostas</td><td><span class="tag i">Arquivo</span></td><td>Marina Souza</td><td>18/10/2026</td><td><span class="tag">Equipe</span></td></tr>
+                    <tr class="clickable" data-name="Manual do Colaborador" onclick="openDoc('Manual do Colaborador','Manuais','Arquivo','RH','01/01/2026','Todos')"><td><b>📄 Manual do Colaborador.pdf</b></td><td>Manuais</td><td><span class="tag i">Arquivo</span></td><td>RH</td><td>01/01/2026</td><td><span class="tag s">Todos</span></td></tr>
+                    <tr class="clickable" data-name="Pasta Fiscal no Drive" onclick="openDoc('Pasta Fiscal no Drive','Fiscal','Link externo','Financeiro','05/09/2026','Restrito')"><td><b>🔗 Pasta Fiscal no Drive</b></td><td>Fiscal</td><td><span class="tag teal">Link externo</span></td><td>Financeiro</td><td>05/09/2026</td><td><span class="tag d">Restrito</span></td></tr>
+                    <tr class="clickable" data-name="Registro de Política de Compras" onclick="openDoc('Política de Compras','Políticas','Registro','Diretoria','12/07/2026','Todos')"><td><b>🗂 Registro de Política de Compras</b></td><td>Políticas</td><td><span class="tag n">Registro</span></td><td>Diretoria</td><td>12/07/2026</td><td><span class="tag s">Todos</span></td></tr>
+                    <tr id="doc-empty" class="hidden"><td colspan="6"><div class="empty"><div class="ico">🔍</div><h3>Nenhum documento encontrado</h3><p>Ajuste a busca ou limpe os filtros aplicados.</p><button class="btn btn-secondary" onclick="document.getElementById('doc-search').value='';filterDocs()">Limpar busca</button></div></td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div id="doc-links-tab" class="hidden">
+                <div class="filters">
+                <div class="search"><input placeholder="Buscar links por título…"/></div>
+                <select><option>Categoria: todas</option><option>Sistemas</option><option>Pastas</option><option>Políticas</option></select>
+                <select><option>Status: todos</option><option>Ativo</option><option>Inativo</option></select>
+                </div>
+                <table>
+                <thead><tr><th>Título</th><th>Categoria</th><th>Status</th><th>Criado por</th><th>Data</th></tr></thead>
+                <tbody>
+                    <tr><td><b>🔗 Portal do Colaborador</b></td><td>Sistemas</td><td><span class="tag s">Ativo</span></td><td>Ana Vieira</td><td>01/02/2026</td></tr>
+                    <tr><td><b>🔗 Pasta de Contratos 2026</b></td><td>Pastas</td><td><span class="tag s">Ativo</span></td><td>Marina Souza</td><td>15/03/2026</td></tr>
+                    <tr><td><b>🔗 Política de Privacidade (LGPD)</b></td><td>Políticas</td><td><span class="tag n">Inativo</span></td><td>Ana Vieira</td><td>10/01/2026</td></tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= DOC DETAIL ================= -->
+        <div class="page" id="page-doc">
+            <div class="page-head">
+            <div><div class="crumb"><a href="#" onclick="go('documentos');return false">Documentos</a> / <span id="doc-crumb">—</span></div>
+            <h1 id="doc-title">—</h1>
+            <p class="subtitle" id="doc-meta">—</p></div>
+            <button class="btn btn-secondary" onclick="go('documentos')">← Voltar</button>
+            </div>
+            <div class="grid grid-2-1">
+            <div class="card">
+                <div class="card-head"><h3>Metadados</h3></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px">
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Categoria</div><div id="doc-cat" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Tipo</div><div id="doc-tipo" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Responsável</div><div id="doc-resp" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Data</div><div id="doc-data" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Acesso</div><div id="doc-acesso" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Localização</div><div style="word-break:break-all;font-size:12px;margin-top:4px">/contratos/2026/nordeste/</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Ações</h3></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                <button class="btn btn-primary" onclick="showToast('Download simulado (protótipo)','success')">⬇ Simular download</button>
+                <button class="btn btn-secondary" onclick="showToast('Abrir localização (simulação)','info')">🔗 Abrir link/localização</button>
+                <button class="btn btn-secondary" onclick="showToast('Histórico do documento (simulação)','info')">🕓 Ver histórico</button>
+                </div>
+                <div class="alert info" style="margin-top:20px"><div>ℹ️</div><div>Este é um protótipo UI/UX. Nenhum arquivo real é baixado ou sincronizado.</div></div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= EQUIPAMENTOS ================= -->
+        <div class="page" id="page-equipamentos">
+            <div class="page-head"><div><div class="crumb">Início / Equipamentos</div><h1>Equipamentos e ativos</h1><p class="subtitle">Inventário, empréstimos e devoluções</p></div>
+            <button class="btn btn-primary" onclick="showToast('Formulário de equipamento (simulação)','info')">＋ Novo equipamento</button></div>
+            <div class="card">
+            <div class="filters">
+                <div class="search"><input placeholder="Buscar por nome ou nº de série…"/></div>
+                <select><option>Estado: todos</option><option>Disponível</option><option>Emprestado</option><option>Em manutenção</option><option>Baixado</option></select>
+            </div>
+            <table><thead><tr><th>Equipamento</th><th>Nº patrimônio</th><th>Estado</th><th>Responsável</th><th>Localização</th><th></th></tr></thead>
+            <tbody>
+                <tr class="clickable" onclick="openEquip('Projetor Epson','Emprestado','Carlos Lima','Sala 2 – Matriz')"><td><b>Projetor Epson PowerLite</b></td><td>PAT-001</td><td><span class="tag i">Emprestado</span></td><td>Carlos Lima</td><td>Sala 2 – Matriz</td><td class="tbl-actions">→</td></tr>
+                <tr class="clickable" onclick="openEquip('Notebook Dell Latitude','Disponível','—','Estoque')"><td><b>Notebook Dell Latitude 5430</b></td><td>PAT-002</td><td><span class="tag s">Disponível</span></td><td>—</td><td>Estoque</td><td class="tbl-actions">→</td></tr>
+                <tr class="clickable" onclick="openEquip('Roteador Mikrotik','Em manutenção','—','Assistência')"><td><b>Roteador Mikrotik hEX</b></td><td>PAT-003</td><td><span class="tag w">Em manutenção</span></td><td>—</td><td>Assistência</td><td class="tbl-actions">→</td></tr>
+                <tr class="clickable" onclick="openEquip('Monitor LG 24','Baixado','—','Descarte')"><td><b>Monitor LG 24"</b></td><td>PAT-004</td><td><span class="tag n">Baixado</span></td><td>—</td><td>Descarte</td><td class="tbl-actions">→</td></tr>
+            </tbody></table>
+            </div>
+        </div>
+
+        <!-- ================= EQUIP DETAIL ================= -->
+        <div class="page" id="page-equip">
+            <div class="page-head">
+            <div><div class="crumb"><a href="#" onclick="go('equipamentos');return false">Equipamentos</a> / <span id="eq-crumb">—</span></div>
+            <h1 id="eq-nome">—</h1>
+            <p class="subtitle" id="eq-meta">—</p></div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="go('equipamentos')">← Voltar</button>
+                <button class="btn btn-primary" onclick="openCheckout()">📤 Emprestar</button>
+            </div>
+            </div>
+            <div class="grid grid-2-1">
+            <div class="card">
+                <div class="card-head"><h3>Histórico de movimentações</h3></div>
+                <ul class="timeline">
+                <li><b>22/10/2026</b> · Empréstimo para Carlos Lima<span class="ts">Previsão de devolução: 29/10/2026</span></li>
+                <li><b>08/10/2026</b> · Devolvido por Marina Souza<span class="ts">Em bom estado</span></li>
+                <li><b>03/10/2026</b> · Empréstimo para Marina Souza</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Detalhes</h3></div>
+                <div style="display:flex;flex-direction:column;gap:12px;font-size:13px">
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Patrimônio</div><div style="margin-top:2px">PAT-001</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Número de série</div><div style="margin-top:2px">SN-EP-2024-0457</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Estado</div><div id="eq-estado" style="margin-top:2px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Responsável atual</div><div id="eq-resp" style="margin-top:2px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Localização</div><div id="eq-loc" style="margin-top:2px">—</div></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= PAINEL DIÁRIO (TELA NORMAL) ================= -->
+        <div class="page" id="page-painel-diario">
+            <div class="page-head">
+            <div>
+                <div class="crumb">Início / Painel diário</div>
+                <h1>Painel diário</h1>
+                <p class="subtitle">Acompanhamento de tarefas da equipe em tempo real</p>
+            </div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="showToast('Configuração do painel (simulação)','info')">Configurar</button>
+                <button class="btn btn-primary" onclick="openFullscreenDaily()">🖥 Abrir em tela cheia</button>
+            </div>
+            </div>
+
+            <div class="alert info">
+            <div>ℹ️</div>
+            <div>O checkbox de conclusão confirma a ação somente após a resposta do servidor (RF-04).</div>
+            </div>
+
+            <div class="daily-grid-normal">
+            <!-- HOJE -->
+            <div class="daily-panel-card">
+                <div class="daily-panel-header">
+                <h3>📅 Tarefas do dia</h3>
+                <span class="count">3</span>
+                </div>
+                <ul class="daily-panel-list" id="daily-hoje-list">
+                <li>
+                    <input type="checkbox" onchange="simulateServerCheck(this, 'Revisar proposta — Nordeste Alimentos')">
+                    <div class="t-info">
+                    <div class="t-title">Revisar proposta — Nordeste Alimentos</div>
+                    <div class="t-meta"><span class="tag d">Alta</span><span class="tag w">vence hoje</span></div>
+                    <div class="t-assignee"><div class="avatar">AV</div> Ana Vieira</div>
+                    </div>
+                </li>
+                <li>
+                    <input type="checkbox" onchange="simulateServerCheck(this, 'Ligar para fornecedor de TI')">
+                    <div class="t-info">
+                    <div class="t-title">Ligar para fornecedor de TI</div>
+                    <div class="t-meta"><span class="tag">Média</span><span class="tag w">vence hoje</span></div>
+                    <div class="t-assignee"><div class="avatar mgr">CL</div> Carlos Lima</div>
+                    </div>
+                </li>
+                <li>
+                    <input type="checkbox" onchange="simulateServerCheck(this, 'Revisar minuta do contrato Aurora')">
+                    <div class="t-info">
+                    <div class="t-title">Revisar minuta do contrato Aurora</div>
+                    <div class="t-meta"><span class="tag d">Alta</span><span class="tag i">até 18h</span></div>
+                    <div class="t-assignee"><div class="avatar mem">MS</div> Marina Souza</div>
+                    </div>
+                </li>
+                </ul>
+            </div>
+
+            <!-- ATRASADAS -->
+            <div class="daily-panel-card late">
+                <div class="daily-panel-header">
+                <h3>⚠️ Atrasadas</h3>
+                <span class="count" style="color:var(--danger)">2</span>
+                </div>
+                <ul class="daily-panel-list" id="daily-atrasadas-list">
+                <li>
+                    <input type="checkbox" onchange="simulateServerCheck(this, 'Enviar relatório mensal de vendas')">
+                    <div class="t-info">
+                    <div class="t-title">Enviar relatório mensal de vendas</div>
+                    <div class="t-meta"><span class="tag d">Alta</span><span class="tag d">Venceu 20/10</span></div>
+                    <div class="t-assignee"><div class="avatar">AV</div> Ana Vieira</div>
+                    </div>
+                </li>
+                <li>
+                    <input type="checkbox" onchange="simulateServerCheck(this, 'Validar contrato Aurora')">
+                    <div class="t-info">
+                    <div class="t-title">Validar contrato Aurora</div>
+                    <div class="t-meta"><span class="tag d">Alta</span><span class="tag d">Venceu 21/10</span></div>
+                    <div class="t-assignee"><div class="avatar mem">MS</div> Marina Souza</div>
+                    </div>
+                </li>
+                </ul>
+            </div>
+
+            <!-- CONCLUÍDAS -->
+            <div class="daily-panel-card done">
+                <div class="daily-panel-header">
+                <h3>✅ Concluídas hoje</h3>
+                <span class="count" style="color:var(--success)">3</span>
+                </div>
+                <ul class="daily-panel-list" id="daily-concluidas-list">
+                <li class="done">
+                    <input type="checkbox" checked disabled>
+                    <div class="t-info">
+                    <div class="t-title">Onboarding cliente Nordeste</div>
+                    <div class="t-meta"><span class="tag s">Concluída</span><span>09:15</span></div>
+                    <div class="t-assignee"><div class="avatar">AV</div> Ana Vieira</div>
+                    </div>
+                </li>
+                <li class="done">
+                    <input type="checkbox" checked disabled>
+                    <div class="t-info">
+                    <div class="t-title">Cadastro TechSul no CRM</div>
+                    <div class="t-meta"><span class="tag s">Concluída</span><span>10:40</span></div>
+                    <div class="t-assignee"><div class="avatar mgr">CL</div> Carlos Lima</div>
+                    </div>
+                </li>
+                <li class="done">
+                    <input type="checkbox" checked disabled>
+                    <div class="t-info">
+                    <div class="t-title">Conferir devolução — Monitor LG</div>
+                    <div class="t-meta"><span class="tag s">Concluída</span><span>11:20</span></div>
+                    <div class="t-assignee"><div class="avatar mem">MS</div> Marina Souza</div>
+                    </div>
+                </li>
+                </ul>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= FUNCIONÁRIOS ================= -->
+        <div class="page" id="page-funcionarios">
+            <div class="page-head">
+            <div>
+                <div class="crumb">Início / Funcionários</div>
+                <h1>Funcionários</h1>
+                <p class="subtitle">Diretório corporativo · Todos os colaboradores da empresa</p>
+            </div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="showToast('Exportação simulada','info')">⬇ Exportar</button>
+            </div>
+            </div>
+            <div class="cards">
+            <!-- Card de Controles: Abas e Busca -->
+            <div class="card" style="padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                <div class="tabs" style="margin-bottom: 0; border-bottom: none; gap: 4px;">
+                <div id="tab-emp-grid" class="tab active" onclick="setEmployeeView('grid')">Grade</div>
+                <div id="tab-emp-list" class="tab" onclick="setEmployeeView('list')">Lista</div>
+                </div>
+                <div class="search-box" style="max-width:320px; width:100%; margin: 0;">
+                <input placeholder="Buscar por nome, cargo ou e-mail…" id="emp-search" oninput="filterEmployees()"/>
+                </div>
+            </div>
+            <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px;">
+                <div class="grid grid-4" id="employee-grid">
+                <!-- Colaborador 1 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg" style="width:64px;height:64px">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Ana">
+                    </div>
+                    <span class="tag i">Admin</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Ana Vieira</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Diretora de Operações</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ ana.vieira@agileflowhub.com.br</span>
+                        <span>📞 (11) 99876-5432</span>
+                        <span>🏢 Equipe: Diretoria</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" onclick="showToast('Abrindo chat com Ana (simulação)','success')">💬 Enviar mensagem</button>
+                </div>
+
+                <!-- Colaborador 2 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg mgr" style="width:64px;height:64px">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Carlos">
+                    </div>
+                    <span class="tag w">Manager</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Carlos Lima</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Gerente Comercial</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ carlos.lima@agileflowhub.com.br</span>
+                        <span>📞 (11) 98765-4321</span>
+                        <span>🏢 Equipe: Comercial</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" onclick="showToast('Abrindo chat com Carlos (simulação)','success')">💬 Enviar mensagem</button>
+                </div>
+
+                <!-- Colaborador 3 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg mem" style="width:64px;height:64px">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Marina">
+                    </div>
+                    <span class="tag n">Member</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Marina Souza</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Analista de Vendas</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ marina.souza@agileflowhub.com.br</span>
+                        <span>📞 (11) 97654-3210</span>
+                        <span>🏢 Equipe: Comercial</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" onclick="showToast('Abrindo chat com Marina (simulação)','success')">💬 Enviar mensagem</button>
+                </div>
+
+                <!-- Colaborador 4 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg" style="width:64px;height:64px;background:#FCE7F3;color:#BE185D">
+                        RA
+                    </div>
+                    <span class="tag w">Pendente</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Renata Alves</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Analista Financeiro</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ renata.alves@agileflowhub.com.br</span>
+                        <span>📞 (11) 96543-2109</span>
+                        <span>🏢 Equipe: Financeiro</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" disabled>💬 Enviar mensagem</button>
+                </div>
+
+                <!-- Colaborador 5 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg" style="width:64px;height:64px;background:#DBEAFE;color:#1E40AF">
+                        FM
+                    </div>
+                    <span class="tag n">Member</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Felipe Martins</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Técnico de Operações</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ felipe.martins@agileflowhub.com.br</span>
+                        <span>📞 (11) 95432-1098</span>
+                        <span>🏢 Equipe: Operações</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" onclick="showToast('Abrindo chat com Felipe (simulação)','success')">💬 Enviar mensagem</button>
+                </div>
+
+                <!-- Colaborador 6 -->
+                <div class="contact-item" style="flex-direction:column;align-items:flex-start;padding:24px;text-align:left;gap:16px">
+                    <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start">
+                    <div class="avatar lg" style="width:64px;height:64px;background:#FEF3C7;color:#B45309">
+                        JS
+                    </div>
+                    <span class="tag n">Member</span>
+                    </div>
+                    <div style="width:100%">
+                    <div class="contact-name" style="font-size:16px">Juliana Santos</div>
+                    <div class="contact-role" style="font-size:13px;margin-bottom:12px">Assistente Administrativo</div>
+                    <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;font-weight:500">
+                        <span>✉️ juliana.santos@agileflowhub.com.br</span>
+                        <span>📞 (11) 94321-0987</span>
+                        <span>🏢 Equipe: Diretoria</span>
+                    </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:auto" onclick="showToast('Abrindo chat com Juliana (simulação)','success')">💬 Enviar mensagem</button>
+                </div>
+                </div>
+
+                <!-- NOVO: Visualização em Tabela (Lista) -->
+                <div class="card hidden" id="employee-table-view" style="padding:0; overflow:hidden;">
+                <div class="tbl-wrap" style="margin:0;">
+                    <table>
+                    <thead>
+                        <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>E-mail</th>
+                        <th>Papel (Role)</th>
+                        <th>Equipe/Depto</th>
+                        <th style="text-align:right">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Colaborador 1 -->
+                        <tr data-name="ana vieira" data-role="diretora de operações" data-details="ana.vieira@agileflowhub.com.br (11) 99876-5432">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                            <div class="user-cell-info"><div class="name">Ana Vieira</div><div class="email">Diretora de Operações</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 99876-5432</td>
+                        <td>ana.vieira@agileflowhub.com.br</td>
+                        <td><span class="tag i">Admin</span></td>
+                        <td>Diretoria</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo chat com Ana (simulação)','success')">💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                        <!-- Colaborador 2 -->
+                        <tr data-name="carlos lima" data-role="gerente comercial" data-details="carlos.lima@agileflowhub.com.br (11) 98765-4321">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar mgr"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                            <div class="user-cell-info"><div class="name">Carlos Lima</div><div class="email">Gerente Comercial</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 98765-4321</td>
+                        <td>carlos.lima@agileflowhub.com.br</td>
+                        <td><span class="tag w">Manager</span></td>
+                        <td>Comercial</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo chat com Carlos (simulação)','success')">💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                        <!-- Colaborador 3 -->
+                        <tr data-name="marina souza" data-role="analista de vendas" data-details="marina.souza@agileflowhub.com.br (11) 97654-3210">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar mem"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                            <div class="user-cell-info"><div class="name">Marina Souza</div><div class="email">Analista de Vendas</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 97654-3210</td>
+                        <td>marina.souza@agileflowhub.com.br</td>
+                        <td><span class="tag n">Member</span></td>
+                        <td>Comercial</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo chat com Marina (simulação)','success')">💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                        <!-- Colaborador 4 -->
+                        <tr data-name="renata alves" data-role="analista financeiro" data-details="renata.alves@agileflowhub.com.br (11) 96543-2109">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar" style="background:#FCE7F3;color:#BE185D">RA</div>
+                            <div class="user-cell-info"><div class="name">Renata Alves</div><div class="email">Analista Financeiro</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 96543-2109</td>
+                        <td>renata.alves@agileflowhub.com.br</td>
+                        <td><span class="tag w">Pendente</span></td>
+                        <td>Financeiro</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" disabled>💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                        <!-- Colaborador 5 -->
+                        <tr data-name="felipe martins" data-role="tecnico de operacoes" data-details="felipe.martins@agileflowhub.com.br (11) 95432-1098">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar" style="background:#DBEAFE;color:#1E40AF">FM</div>
+                            <div class="user-cell-info"><div class="name">Felipe Martins</div><div class="email">Técnico de Operações</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 95432-1098</td>
+                        <td>felipe.martins@agileflowhub.com.br</td>
+                        <td><span class="tag n">Member</span></td>
+                        <td>Operações</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo chat com Felipe (simulação)','success')">💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                        <!-- Colaborador 6 -->
+                        <tr data-name="juliana santos" data-role="assistente administrativo" data-details="juliana.santos@agileflowhub.com.br (11) 94321-0987">
+                        <td>
+                            <div class="user-cell">
+                            <div class="avatar" style="background:#FEF3C7;color:#B45309">JS</div>
+                            <div class="user-cell-info"><div class="name">Juliana Santos</div><div class="email">Assistente Administrativo</div></div>
+                            </div>
+                        </td>
+                        <td>(11) 94321-0987</td>
+                        <td>juliana.santos@agileflowhub.com.br</td>
+                        <td><span class="tag n">Member</span></td>
+                        <td>Diretoria</td>
+                        <td class="tbl-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo chat com Juliana (simulação)','success')">💬 Enviar mensagem</button>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+                <!-- Empty state para busca -->
+                <div id="emp-empty" class="card hidden">
+                <div class="empty">
+                    <div class="ico">🔍</div>
+                    <h3>Nenhum funcionário encontrado</h3>
+                    <p>Tente ajustar a busca por outro nome, cargo ou e-mail.</p>
+                    <button class="btn btn-secondary" onclick="document.getElementById('emp-search').value='';filterEmployees()">Limpar busca</button>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= TEAMS ================= -->
+        <div class="page" id="page-admin-equipes">
+            <div class="page-head">
+            <div><div class="crumb">Início / Equipes</div><h1>Equipes e departamentos</h1><p class="subtitle">Gestão de membros, metas e progresso</p></div>
+            <button class="btn btn-primary" onclick="showToast('Nova equipe (simulação)','info')">＋ Nova equipe</button>
+            </div>
+            
+            <div class="grid grid-3">
+            <!-- Card Equipe 1 -->
+            <div class="team-card">
+                <div class="team-header">
+                <h3>Comercial</h3>
+                <p>Foco em vendas e novos negócios</p>
+                </div>
+                <div class="team-members">
+                <div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="avatar mgr"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="avatar mem"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="more-members">+2</div>
+                </div>
+                <div class="team-metrics">
+                <div class="metric-box"><div class="v">R$ 180k</div><div class="k">Em Negociação</div></div>
+                <div class="metric-box"><div class="v">85%</div><div class="k">Metas do Mês</div></div>
+                </div>
+                <div class="team-kanban-mini">
+                <div class="mini-k-label"><span>Progresso das Demandas</span><span>45 Concluídas</span></div>
+                <div class="mini-kanban-row">
+                    <div class="mini-k-fill" style="width:50%;background:var(--success)"></div>
+                    <div class="mini-k-fill" style="width:30%;background:var(--primary)"></div>
+                    <div class="mini-k-fill" style="width:20%;background:var(--warning)"></div>
+                </div>
+                </div>
+                <div class="team-footer">
+                <button class="btn btn-secondary btn-sm" style="flex:1">Ver membros</button>
+                <button class="btn btn-primary btn-sm" style="flex:1">Editar</button>
+                </div>
+            </div>
+
+            <!-- Card Equipe 2 -->
+            <div class="team-card">
+                <div class="team-header">
+                <h3>Financeiro</h3>
+                <p>Gestão de contratos e faturamento</p>
+                </div>
+                <div class="team-members">
+                <div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="avatar mem"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                </div>
+                <div class="team-metrics">
+                <div class="metric-box"><div class="v">12</div><div class="k">Docs Pendentes</div></div>
+                <div class="metric-box"><div class="v">R$ 92k</div><div class="k">Faturado</div></div>
+                </div>
+                <div class="team-kanban-mini">
+                <div class="mini-k-label"><span>Progresso das Demandas</span><span>20 Concluídas</span></div>
+                <div class="mini-kanban-row">
+                    <div class="mini-k-fill" style="width:70%;background:var(--success)"></div>
+                    <div class="mini-k-fill" style="width:20%;background:var(--primary)"></div>
+                    <div class="mini-k-fill" style="width:10%;background:var(--warning)"></div>
+                </div>
+                </div>
+                <div class="team-footer">
+                <button class="btn btn-secondary btn-sm" style="flex:1">Ver membros</button>
+                <button class="btn btn-primary btn-sm" style="flex:1">Editar</button>
+                </div>
+            </div>
+
+            <!-- Card Equipe 3 -->
+            <div class="team-card">
+                <div class="team-header" style="background:linear-gradient(135deg,#F1F5F9,#E2E8F0)">
+                <h3>Operações</h3>
+                <p>Logística e equipamentos</p>
+                </div>
+                <div class="team-members">
+                <div class="avatar mgr"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="avatar mem"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div>
+                <div class="more-members">+4</div>
+                </div>
+                <div class="team-metrics">
+                <div class="metric-box"><div class="v">12</div><div class="k">Equip. em Uso</div></div>
+                <div class="metric-box"><div class="v" style="color:var(--danger)">2</div><div class="k">Atrasos</div></div>
+                </div>
+                <div class="team-kanban-mini">
+                <div class="mini-k-label"><span>Progresso das Demandas</span><span>18 Concluídas</span></div>
+                <div class="mini-kanban-row">
+                    <div class="mini-k-fill" style="width:40%;background:var(--success)"></div>
+                    <div class="mini-k-fill" style="width:50%;background:var(--primary)"></div>
+                    <div class="mini-k-fill" style="width:10%;background:var(--warning)"></div>
+                </div>
+                </div>
+                <div class="team-footer">
+                <button class="btn btn-secondary btn-sm" style="flex:1">Ver membros</button>
+                <button class="btn btn-primary btn-sm" style="flex:1">Editar</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= AUDITORIA ================= -->
+        <div class="page" id="page-auditoria">
+            <div class="page-head"><div><div class="crumb">Início / Auditoria</div><h1>Auditoria</h1><p class="subtitle">Histórico de eventos do sistema</p></div>
+            <button class="btn btn-secondary" onclick="showToast('Exportação simulada (protótipo)','info')">⬇ Exportar</button></div>
+            <div class="card">
+            <div class="filters">
+                <div class="search"><input id="aud-search" placeholder="Buscar por ator, ação ou recurso…" oninput="filterAudit()"/></div>
+                <select id="aud-actor" onchange="filterAudit()"><option value="">Ator: todos</option><option>Ana Vieira</option><option>Carlos Lima</option><option>Marina Souza</option></select>
+                <select id="aud-action" onchange="filterAudit()"><option value="">Ação: todas</option><option>Criou</option><option>Atualizou</option><option>Moveu</option><option>Concluiu</option></select>
+            </div>
+            <table>
+                <thead><tr><th>Data/hora</th><th>Ator</th><th>Ação</th><th>Recurso</th></tr></thead>
+                <tbody id="aud-body">
+                <tr class="clickable" data-actor="Ana Vieira" data-action="Moveu" data-recurso="Oportunidade Fornecimento Q4" onclick="openAudit('22/10/2026 14:32','Ana Vieira','Moveu','Oportunidade Fornecimento Q4','Etapa alterada de Proposta para Negociação')"><td>22/10/2026 14:32</td><td>Ana Vieira</td><td>Moveu</td><td>Oportunidade Fornecimento Q4</td></tr>
+                <tr class="clickable" data-actor="Carlos Lima" data-action="Criou" data-recurso="Empréstimo Projetor Epson" onclick="openAudit('22/10/2026 14:05','Carlos Lima','Criou','Empréstimo Projetor Epson','Empréstimo para Carlos Lima, devolução em 29/10/2026')"><td>22/10/2026 14:05</td><td>Carlos Lima</td><td>Criou</td><td>Empréstimo Projetor Epson</td></tr>
+                <tr class="clickable" data-actor="Marina Souza" data-action="Atualizou" data-recurso="Documento Contrato Aurora 2026" onclick="openAudit('22/10/2026 13:20','Marina Souza','Atualizou','Documento Contrato Aurora 2026','Anexo atualizado')"><td>22/10/2026 13:20</td><td>Marina Souza</td><td>Atualizou</td><td>Documento Contrato Aurora 2026</td></tr>
+                <tr class="clickable" data-actor="Ana Vieira" data-action="Concluiu" data-recurso="Tarefa #T-1042" onclick="openAudit('22/10/2026 11:15','Ana Vieira','Concluiu','Tarefa #T-1042','Tarefa &quot;Enviar contrato Aurora&quot; concluída')"><td>22/10/2026 11:15</td><td>Ana Vieira</td><td>Concluiu</td><td>Tarefa #T-1042</td></tr>
+                <tr id="aud-empty" class="hidden"><td colspan="4"><div class="empty"><div class="ico">🔍</div><h3>Nenhum evento encontrado</h3><p>Ajuste os filtros aplicados.</p><button class="btn btn-secondary" onclick="document.getElementById('aud-search').value='';document.getElementById('aud-actor').value='';document.getElementById('aud-action').value='';filterAudit()">Limpar filtros</button></div></td></tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- ================= AUDIT DETAIL ================= -->
+        <div class="page" id="page-audit">
+            <div class="page-head"><div><div class="crumb"><a href="#" onclick="go('auditoria');return false">Auditoria</a> / Evento</div><h1>Detalhe do evento</h1><p class="subtitle">Registro completo da ação</p></div>
+            <button class="btn btn-secondary" onclick="go('auditoria')">← Voltar</button></div>
+            <div class="card">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:13px">
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Data/hora (UTC)</div><div id="aud-dt" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Ator</div><div id="aud-at" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Ação</div><div id="aud-ac" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">Recurso (ResourceType + Id)</div><div id="aud-re" style="margin-top:4px">—</div></div>
+                <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600">CorrelationId</div><div style="margin-top:4px;font-family:monospace;font-size:11px;color:var(--muted)">b5a2c9e1-4f3a-4b2c-8a1d-9e0f7c6b5a4d</div></div>
+            </div>
+            <div class="card-head" style="margin-top:24px"><h3>Detalhes registrados</h3></div>
+            <p id="aud-desc" style="font-size:13px;color:var(--text);margin:0;background:var(--bg);padding:12px 16px;border-radius:8px">—</p>
+            </div>
+        </div>
+
+        <!-- ================= ADMIN PERMISSAO ================= -->
+        <div class="page" id="page-admin-usuarios">
+            <div class="page-head"><div><div class="crumb">Administração / Permissões</div><h1>Usuários</h1><p class="subtitle">Gestão de pessoas e papéis (Admin/Manager/Member)</p></div>
+            <button class="btn btn-primary" onclick="showToast('Formulário de usuário (simulação)','info')">＋ Novo usuário</button></div>
+            <div class="card">
+            <table><thead><tr><th>Nome</th><th>E-mail</th><th>Papel (Role)</th><th>Equipe/Depto</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td><div class="user-cell"><div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div></div><b>Ana Vieira</b></td><td>ana.vieira@agileflowhub.com.br</td><td><span class="tag i">Admin</span></td><td>Diretoria</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><div class="user-cell"><div class="avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div></div><b>Carlos Lima</b></td><td>carlos.lima@agileflowhub.com.br</td><td><span class="tag w">Manager</span></td><td>Comercial</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><div class="user-cell"><div class="avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div></div><b>Marina Souza</b></td><td>marina.souza@agileflowhub.com.br</td><td><span class="tag n">Member</span></td><td>Comercial</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><div class="user-cell"><div class="avatar"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"></div></div><b>Renata Alves</b></td><td>renata.alves@agileflowhub.com.br</td><td><span class="tag n">Member</span></td><td>Financeiro</td><td><span class="tag w">Pendente</span></td></tr>
+            </tbody></table>
+            </div>
+            <div class="card">
+            <div class="card-head"><h3>Matriz de papéis e permissões (ADR 0004)</h3></div>
+            <table class="perm-matrix"><thead><tr><th>Módulo / Ação</th><th>Admin</th><th>Manager</th><th>Member</th></tr></thead>
+            <tbody>
+                <tr><td>Ver dashboard</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td></tr>
+                <tr><td>Criar/editar tarefas</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td></tr>
+                <tr><td>Gerenciar clientes (CRM)</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td></tr>
+                <tr><td>Emprestar equipamentos</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" disabled></td></tr>
+                <tr><td>Escrever Links corporativos</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" disabled></td></tr>
+                <tr><td>Acessar administração</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" disabled></td><td><input type="checkbox" disabled></td></tr>
+                <tr><td>Exportar auditoria</td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" checked disabled></td><td><input type="checkbox" disabled></td></tr>
+            </tbody></table>
+            </div>
+        </div>
+
+                <!-- ================= ADMIN: REGRAS DE IA ================= -->
+        <div class="page" id="page-admin-ia">
+            <div class="page-head">
+            <div>
+                <div class="crumb">Administração / Regras de IA</div>
+                <h1>Regras de Automação com IA</h1>
+                <p class="subtitle">Defina os limites de atuação da IA no atendimento e nos processos</p>
+            </div>
+            <div class="page-head-actions">
+                <button class="btn btn-secondary" onclick="showToast('Simulação de teste executada','info')">🧪 Testar Regras</button>
+                <button class="btn btn-primary" onclick="showToast('Regras salvas (simulação)','success')">💾 Salvar Regras</button>
+            </div>
+            </div>
+
+            <div class="alert warn">
+            <div>⚠️</div>
+            <div><b>Importante:</b> A IA opera em tempo real sem aprovação humana. As regras abaixo são a única barreira entre a IA e o cliente. Revise-as periodicamente.</div>
+            </div>
+
+            <!-- BLOCO 1: Escopo -->
+            <div class="card">
+            <div class="card-head">
+                <h3>1. Escopo de Atuação da IA</h3>
+                <span class="tag s">Ativo</span>
+            </div>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 20px">Defina o que a IA pode fazer sem intervenção humana.</p>
+            
+            <div class="grid grid-2">
+                <label class="checkbox" style="padding:16px;border:1px solid var(--border);border-radius:12px;align-items:flex-start;gap:12px">
+                <input type="checkbox" checked style="margin-top:3px">
+                <div>
+                    <div style="font-weight:700;font-size:13px;color:var(--navy)">Responder perguntas frequentes</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:4px">Baseado na base de conhecimento aprovada.</div>
+                </div>
+                </label>
+                <label class="checkbox" style="padding:16px;border:1px solid var(--border);border-radius:12px;align-items:flex-start;gap:12px">
+                <input type="checkbox" checked style="margin-top:3px">
+                <div>
+                    <div style="font-weight:700;font-size:13px;color:var(--navy)">Classificar e rotear chamados</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:4px">Direciona para a equipe correta.</div>
+                </div>
+                </label>
+                <label class="checkbox" style="padding:16px;border:1px solid var(--border);border-radius:12px;align-items:flex-start;gap:12px">
+                <input type="checkbox" checked style="margin-top:3px">
+                <div>
+                    <div style="font-weight:700;font-size:13px;color:var(--navy)">Criar tarefas internas</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:4px">Gera demanda no módulo de Demandas.</div>
+                </div>
+                </label>
+                <label class="checkbox" style="padding:16px;border:1px solid var(--border);border-radius:12px;align-items:flex-start;gap:12px">
+                <input type="checkbox" checked style="margin-top:3px">
+                <div>
+                    <div style="font-weight:700;font-size:13px;color:var(--navy)">Classificar documentos automaticamente</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:4px">Sugere categoria, tags e nível de acesso ao subir um arquivo.</div>
+                </div>
+                </label>
+            </div>
+            </div>
+
+            <!-- BLOCO 2: Assuntos Proibidos -->
+            <div class="card">
+            <div class="card-head">
+                <h3>2. Assuntos Proibidos (Guardrails)</h3>
+                <span class="tag d">Bloqueante</span>
+            </div>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 20px">Se o cliente mencionar estes tópicos, a IA <b>não responde</b> e escala imediatamente para um humano.</p>
+            
+            <div class="filters">
+                <div class="search"><input placeholder="Adicionar tópico proibido…"/></div>
+                <button class="btn btn-secondary" onclick="showToast('Tópico adicionado','success')">＋ Adicionar</button>
+            </div>
+            
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <span class="tag d">Reclamação formal · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Preço e desconto · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Questões jurídicas · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Dados sensíveis (LGPD) · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Cancelamento de contrato · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Cliente irritado/ameaça · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+                <span class="tag d">Emergência técnica · <button style="background:none;color:inherit;padding:0;margin-left:4px">×</button></span>
+            </div>
+            
+            <div class="alert info" style="margin-top:16px">
+                <div>💡</div>
+                <div><b>Detecção:</b> A IA analisa o tom e o vocabulário. Se a confiança de que o cliente está falando de um tópico proibido for <b>maior que 70%</b>, a conversa é escalada imediatamente.</div>
+            </div>
+            </div>
+
+            <!-- BLOCO 3: Regras de Confiança -->
+            <div class="card">
+            <div class="card-head"><h3>3. Nível de Confiança Mínimo</h3></div>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 20px">Se a IA não tiver certeza da resposta, ela NÃO deve inventar.</p>
+            
+            <div class="field">
+                <label>Classificação automática de documentos</label>
+                <select>
+                <option>Sugerir e aguardar aprovação do responsável (Recomendado)</option>
+                <option>Aplicar automaticamente se confiança &gt; 95%</option>
+                <option>Nunca aplicar automaticamente</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Confiança mínima para responder sozinha: <b style="color:var(--primary)">85%</b></label>
+                <input type="range" min="50" max="100" value="85" oninput="this.previousElementSibling.querySelector('b').textContent=this.value+'%'" style="width:100%;accent-color:var(--primary)"/>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
+                <span>50% (Arriscada)</span><span>85% (Recomendado)</span><span>100% (Ultra-cautelosa)</span>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label>Quando a confiança for baixa, o que fazer?</label>
+                <select>
+                <option>Escalar imediatamente para um humano</option>
+                <option>Responder "Vou verificar e já retorno" e aguardar humano</option>
+                <option>Tentar reformular a pergunta ao cliente</option>
+                </select>
+            </div>
+            </div>
+
+            <!-- BLOCO 4: Horário de Atuação -->
+            <div class="card">
+            <div class="card-head"><h3>4. Horário de Atuação da IA</h3></div>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 20px">Fora do horário, a IA pode assumir o atendimento total.</p>
+            
+            <div class="grid grid-2">
+                <div>
+                <div class="field"><label>Horário comercial (IA como auxiliar)</label><input type="text" value="08:00 - 18:00 (Seg-Sex)"/></div>
+                </div>
+                <div>
+                <div class="field"><label>Fora do horário (IA como atendente principal)</label>
+                    <select>
+                    <option>Sim — IA responde todos os chamados</option>
+                    <option>Não — apenas registra para o dia seguinte</option>
+                    </select>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- BLOCO 5: Base de Conhecimento -->
+            <div class="card">
+            <div class="card-head">
+                <h3>5. Base de Conhecimento da IA</h3>
+                <button class="btn btn-secondary btn-sm" onclick="go('documentos')">Gerenciar documentos →</button>
+            </div>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 20px">A IA só pode responder usando as fontes aprovadas abaixo. Nenhuma resposta fora dessa base é permitida.</p>
+            
+            <table>
+                <thead><tr><th>Fonte</th><th>Tipo</th><th>Última atualização</th><th>Status</th></tr></thead>
+                <tbody>
+                <tr><td><b>📄 FAQ - Perguntas Frequentes.pdf</b></td><td>Documento</td><td>10/10/2026</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><b>📄 Manual do Produto v3.docx</b></td><td>Documento</td><td>01/09/2026</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><b>🔗 Portal de Ajuda</b></td><td>Link externo</td><td>15/10/2026</td><td><span class="tag s">Ativo</span></td></tr>
+                <tr><td><b>📄 Política de Trocas e Devoluções</b></td><td>Documento</td><td>20/08/2026</td><td><span class="tag w">Revisar</span></td></tr>
+                </tbody>
+            </table>
+            
+            <div class="alert info" style="margin-top:16px">
+                <div>🔒</div>
+                <div><b>Segurança:</b> A IA <b>nunca</b> acessa dados de outros clientes, senhas, informações financeiras internas ou documentos com classificação "Restrito".</div>
+            </div>
+            </div>
+
+            <!-- Log de Auditoria da IA -->
+            <div class="card">
+            <div class="card-head">
+                <h3>📋 Últimas decisões da IA</h3>
+                <span class="link" onclick="go('auditoria')">Ver auditoria completa →</span>
+            </div>
+            <table>
+                <thead><tr><th>Data/hora</th><th>Cliente</th><th>Decisão</th><th>Confiança</th></tr></thead>
+                <tbody>
+                <tr><td>22/10 14:32</td><td>Renata Castro</td><td><span class="tag s">Respondeu com FAQ</span></td><td>94%</td></tr>
+                <tr><td>22/10 14:15</td><td>Paulo Mendes</td><td><span class="tag w">Escalou (tópico proibido: preço)</span></td><td>—</td></tr>
+                <tr><td>22/10 13:58</td><td>Fernanda Rocha</td><td><span class="tag i">Criou demanda vinculada</span></td><td>88%</td></tr>
+                <tr><td>22/10 13:42</td><td>Cliente desconhecido</td><td><span class="tag n">Escalou (confiança baixa)</span></td><td>62%</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- ================= ADMIN BRANDING ================= -->
+        <div class="page" id="page-admin-branding">
+            <div class="page-head"><div><div class="crumb">Administração / Identidade visual</div><h1>Identidade visual</h1><p class="subtitle">Personalize a aparência da sua instância</p></div>
+            <button class="btn btn-primary" onclick="showToast('Configurações de marca salvas (simulação)','success')">Salvar</button></div>
+            <div class="grid grid-2">
+            <div class="card">
+                <div class="card-head"><h3>Configurações</h3></div>
+                <div class="field"><label>Cor principal</label><input type="color" id="brand-color" value="#4401FC" oninput="updatePreview()" style="height:44px;padding:4px"/></div>
+                <div class="field"><label>Cor secundária</label><input type="color" id="brand-color2" value="#02DAC6" oninput="updatePreview()" style="height:44px;padding:4px"/></div>
+                <div class="field"><label>Logo (upload simulado)</label><button class="btn btn-secondary" onclick="showToast('Upload simulado — nenhum arquivo enviado','info')">📤 Enviar logo</button></div>
+                <div class="alert info" style="margin-top:16px"><div>ℹ️</div><div>Alterações afetam apenas a prévia ao lado. Nenhuma configuração é persistida neste protótipo.</div></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Prévia</h3></div>
+                <div class="branding-preview">
+                <div class="bp-header" id="bp-header" style="background:var(--primary)"><div style="width:24px;height:24px;background:#fff;color:var(--navy);border-radius:6px;display:grid;place-items:center;font-size:14px">◈</div>AgileFlowHub</div>
+                <div class="bp-body">
+                    <div style="font-size:18px;font-weight:700;color:var(--navy)">Exemplo de conteúdo</div>
+                    <div style="font-size:13px;color:var(--muted)">Veja como os componentes aparecem com sua marca aplicada.</div>
+                    <button class="bp-button" id="bp-btn" style="background:var(--primary)">Botão primário</button>
+                    <div style="display:flex;gap:8px;margin-top:8px"><span class="tag" id="bp-tag" style="background:#EEE9FF;color:#4401FC">Etiqueta</span><span class="tag s">Sucesso</span></div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= ADMIN PREFS ================= -->
+        <div class="page" id="page-admin-prefs">
+            <div class="page-head"><div><div class="crumb">Administração / Preferências</div><h1>Preferências</h1></div></div>
+            <div class="grid grid-2">
+            <div class="card">
+                <div class="card-head"><h3>Perfil pessoal</h3></div>
+                <div class="field-row">
+                <div class="field"><label>Nome</label><input value="Ana Vieira"/></div>
+                <div class="field"><label>E-mail (alterado via Admin)</label><input value="ana.vieira@agileflowhub.com.br" disabled/></div>
+                </div>
+                <div class="field"><label>Cargo / Papel</label><input value="Administradora (Admin)" disabled/></div>
+                <button class="btn btn-primary" onclick="showToast('Perfil atualizado (simulação)','success')">Salvar alterações</button>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Notificações (ilustrativas)</h3></div>
+                <label class="checkbox" style="margin-bottom:12px;display:flex;align-items:center;gap:8px"><input type="checkbox" checked> Receber e-mail ao ser mencionada</label>
+                <label class="checkbox" style="margin-bottom:12px;display:flex;align-items:center;gap:8px"><input type="checkbox" checked> Resumo diário de tarefas</label>
+                <label class="checkbox" style="margin-bottom:12px;display:flex;align-items:center;gap:8px"><input type="checkbox"> Alertas de devolução de equipamento</label>
+                <label class="checkbox" style="display:flex;align-items:center;gap:8px"><input type="checkbox"> Notificações de pipeline comercial</label>
+            </div>
+            </div>
+        </div>
+
+        <!-- ================= ACCESS DENIED ================= -->
+        <div class="page" id="page-denied">
+            <div class="denied">
+            <div class="ico">🔒</div>
+            <h2>Acesso restrito</h2>
+            <p>Você não tem permissão para acessar esta área. Se acredita que se trata de um engano, contate o administrador do sistema.</p>
+            <button class="btn btn-primary" onclick="go('dashboard')">Voltar ao dashboard</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- ================= MODAIS ================= -->
+    <!-- MODAL TASK -->
+    <div class="modal" id="modal-task">
+    <div class="modal-card">
+        <div class="modal-head"><h3>Criar nova tarefa</h3><button class="x" onclick="closeModal('modal-task')">×</button></div>
+        <form onsubmit="return submitTask(event)">
+        <div class="field" id="f-task-title"><label>Título <span class="req">*</span></label><input id="task-title" placeholder="Ex.: Revisar proposta comercial" required/><div class="err-msg">Informe um título</div></div>
+        <div class="field"><label>Descrição</label><textarea rows="3" placeholder="Detalhes da tarefa…"></textarea></div>
+        <div class="field-row">
+            <div class="field"><label>Prioridade</label><select><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
+            <div class="field"><label>Prazo</label><input type="date" value="2026-10-25"/></div>
+        </div>
+        <div class="field-row">
+            <div class="field"><label>Responsável</label><select><option>Ana Vieira</option><option>Carlos Lima</option></select></div>
+            <div class="field"><label>Departamento</label><select><option>Comercial</option><option>Operações</option><option>Financeiro</option></select></div>
+        </div>
+        <div class="modal-actions"><button type="button" class="btn btn-secondary" onclick="closeModal('modal-task')">Cancelar</button><button type="submit" class="btn btn-primary">Criar tarefa</button></div>
+        </form>
+    </div>
+    </div>
+
+    <!-- MODAL WON -->
+    <div class="modal" id="modal-win">
+    <div class="modal-card">
+        <div class="modal-head"><h3>Marcar oportunidade como ganha</h3><button class="x" onclick="closeModal('modal-win')">×</button></div>
+        <p style="color:var(--muted);font-size:13px;margin:0 0 16px">Deseja criar uma tarefa de onboarding vinculada a este cliente? (Regra de negócio: a oportunidade não aceitará mais atividades após ser ganha).</p>
+        <div class="field"><label>Título da tarefa de onboarding</label><input id="win-task-title" value="Onboarding Nordeste Alimentos"/></div>
+        <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('modal-win')">Agora não</button><button class="btn btn-primary" onclick="confirmWin()">Criar tarefa</button></div>
+    </div>
+    </div>
+
+    <!-- MODAL CHECKOUT -->
+    <div class="modal" id="modal-checkout">
+    <div class="modal-card">
+        <div class="modal-head"><h3>Emprestar equipamento</h3><button class="x" onclick="closeModal('modal-checkout')">×</button></div>
+        <form onsubmit="return submitCheckout(event)">
+        <div class="field"><label>Equipamento</label><input value="Projetor Epson PowerLite" disabled/></div>
+        <div class="field" id="f-eq-user"><label>Colaborador <span class="req">*</span></label><select id="eq-user" required><option value="">Selecione…</option><option>Ana Vieira</option><option>Carlos Lima</option><option>Marina Souza</option></select><div class="err-msg">Selecione um colaborador</div></div>
+        <div class="field"><label>Previsão de devolução <span class="req">*</span></label><input type="date" value="2026-10-29" required/></div>
+        <div class="field"><label>Observações</label><textarea rows="2" placeholder="Ex.: utilizado em apresentação externa…"></textarea></div>
+        <div class="modal-actions"><button type="button" class="btn btn-secondary" onclick="closeModal('modal-checkout')">Cancelar</button><button type="submit" class="btn btn-primary">Confirmar empréstimo</button></div>
+        </form>
+    </div>
+    </div>
+
+    <!-- MODAL FULLSCREEN DAILY -->
+    <div class="modal" id="modal-daily-fullscreen">
+    <div style="position:fixed;inset:0;background:var(--bg);z-index:200;overflow-y:auto">
+        <div class="daily-screen">
+        <div class="daily-top">
+            <div>
+            <div class="clock" id="live-clock">14:32</div>
+            <div class="date">Quinta-feira, 22 de outubro de 2026</div>
+            </div>
+            <div style="display:flex;gap:10px"><button class="btn btn-secondary" onclick="closeModal('modal-daily-fullscreen')">Fechar</button></div>
+        </div>
+        
+        <div class="daily-grid">
+            <!-- HOJE -->
+            <div class="daily-card">
+            <h3>📅 Tarefas do dia <span style="font-size:12px;opacity:.7">3</span></h3>
+            <div class="big">3</div>
+            <ul>
+                <li>
+                <span class="item-title">Revisar proposta — Nordeste Alimentos</span>
+                <span class="item-meta">Alta prioridade · Vence hoje · Ana Vieira</span>
+                </li>
+                <li>
+                <span class="item-title">Ligar para fornecedor de TI</span>
+                <span class="item-meta">Média prioridade · Vence hoje · Carlos Lima</span>
+                </li>
+                <li>
+                <span class="item-title">Revisar minuta do contrato Aurora</span>
+                <span class="item-meta">Alta prioridade · Até 18h · Marina Souza</span>
+                </li>
+            </ul>
+            </div>
+
+            <!-- ATRASADAS -->
+            <div class="daily-card late">
+            <h3>⚠️ Atrasadas <span style="font-size:12px;opacity:.7">2</span></h3>
+            <div class="big" style="color:#FCA5A5">2</div>
+            <ul>
+                <li>
+                <span class="item-title">Enviar relatório mensal de vendas</span>
+                <span class="item-meta">Alta prioridade · Venceu 20/10 · Ana Vieira</span>
+                </li>
+                <li>
+                <span class="item-title">Validar contrato Aurora</span>
+                <span class="item-meta">Alta prioridade · Venceu 21/10 · Marina Souza</span>
+                </li>
+            </ul>
+            </div>
+
+            <!-- CONCLUÍDAS -->
+            <div class="daily-card done">
+            <h3>✅ Concluídas hoje <span style="font-size:12px;opacity:.7">8</span></h3>
+            <div class="big" style="color:#6EE7B7">8</div>
+            <ul>
+                <li>
+                <span class="item-title">Onboarding cliente Nordeste</span>
+                <span class="item-meta">Concluída às 09:15 · Ana Vieira</span>
+                </li>
+                <li>
+                <span class="item-title">Cadastro TechSul no CRM</span>
+                <span class="item-meta">Concluída às 10:40 · Carlos Lima</span>
+                </li>
+                <li>
+                <span class="item-title">Conferir devolução — Monitor LG</span>
+                <span class="item-meta">Concluída às 11:20 · Marina Souza</span>
+                </li>
+                <li>
+                <span class="item-title">Revisar política de compras</span>
+                <span class="item-meta">Concluída às 12:05 · Ana Vieira</span>
+                </li>
+            </ul>
+            </div>
+        </div>
+        
+        <div style="text-align:center;font-size:11px;opacity:.5">Pré-visualização estática · sem atualização automática</div>
+        </div>
+    </div>
+    </div>
+
+    <!-- TOASTS -->
+    <div id="toast-stack"></div>
+    <script src="script.js"></script>
+</body>
+</html>
